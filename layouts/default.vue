@@ -1,37 +1,29 @@
 <template>
-  <v-app dark>
-    <v-content>
-      <v-container>
+  <v-app>
+    <v-main>
+      <v-fade-transition>
         <nuxt />
-      </v-container>
-    </v-content>
+      </v-fade-transition>
+    </v-main>
+
   </v-app>
 </template>
-
 <script>
+import { mapState, mapGetters } from "vuex";
+
 export default {
+  name: "DefaultLayout",
   data() {
     return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
-      items: [
-        {
-          icon: 'apps',
-          title: 'Welcome',
-          to: '/'
-        },
-        {
-          icon: 'bubble_chart',
-          title: 'Inspire',
-          to: '/inspire'
-        }
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js'
-    }
+      drawer: true
+    };
+  },
+  computed: {
+  },
+  async mounted() {
+    //  await this.getProfileDetail();
+  },
+  methods: {
   }
-}
+};
 </script>

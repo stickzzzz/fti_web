@@ -1,0 +1,175 @@
+@import "./_fonts.scss";
+@import "./_customize.scss";
+
+$material-light: ('app-bar': #FFFFFF,
+    'text': ('primary': rgb(0, 0, 0),
+        'secondary': rgb(64, 64, 64),
+        'link': rgb(171, 91, 43),
+        'link-hover': rgb(197, 105, 48),
+        'disabled': rgba(111, 118, 128, 0.6)),
+
+    // 'icons': ('active': rgba(55, 196, 170, 0.54),
+    //     'inactive': rgba(55, 196, 170, 0.38)),
+
+    // 'buttons': ('disabled': rgba(255, 255, 255, 0.26),
+    // 'focused': rgba(255, 255, 255, 0.12),
+    // 'focused-alt': rgba(255, 255, 255, 0.6),
+    // 'pressed': rgba(55, 196, 170, 0.4)),
+
+    'background': #8E9EAE,
+    'bg-color': #8E9EAE,
+    'text-color': #313d4d);
+
+$material-dark: ('app-bar': #FFFFFF,
+    'text': ('primary': #FFFFFF,
+        'secondary': rgb(64, 64, 64),
+        'link': rgb(171, 91, 43),
+        'link-hover': rgb(197, 105, 48),
+        'disabled': rgba(111, 118, 128, 0.6)),
+
+    // 'icons': ('active': rgba(55, 196, 170, 0.54),
+    //     'inactive': rgba(55, 196, 170, 0.38)),
+
+    // 'buttons': ('disabled': rgba(255, 255, 255, 0.26),
+    // 'focused': rgba(255, 255, 255, 0.12),
+    // 'focused-alt': rgba(255, 255, 255, 0.6),
+    // 'pressed': rgba(55, 196, 170, 0.4)),
+
+    'background': #8E9EAE,
+    'bg-color': #8E9EAE,
+    'text-color': #313d4d);
+
+// $font-size-root: 14px;
+$body-font-family: "Kanit", system-ui, -apple-system, BlinkMacSystemFont,
+  "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+$heading-font-family: $body-font-family;
+
+// $font-weights: ('thin': 300,
+//     'light': 400,
+//     'regular': 500,
+//     'medium': 700,
+//     'bold': 800,
+//     'black': 900);
+
+//typography
+$headings: (
+  "h1": (
+    "size": 5rem,
+    "weight": 500,
+    "line-height": 5.5rem,
+    "letter-spacing": -0.015625em,
+    "font-family": $heading-font-family
+  ),
+  "h2": (
+    "size": 3.75rem,
+    "weight": 500,
+    "line-height": 5rem,
+    "letter-spacing": -0.0083333333em,
+    "font-family": $heading-font-family
+  ),
+  "h3": (
+    "size": 3rem,
+    "weight": 500,
+    "line-height": 3.75rem,
+    "letter-spacing": normal,
+    "font-family": $heading-font-family
+  ),
+  "h4": (
+    "size": 2.125rem,
+    "weight": 500,
+    "line-height": 2.75rem,
+    "letter-spacing": 0.0073529412em,
+    "font-family": $heading-font-family
+  ),
+  "h5": (
+    "size": 1.5rem,
+    "weight": 500,
+    "line-height": 2rem,
+    "letter-spacing": 0.006em,
+    "font-family": $heading-font-family
+  ),
+  "h6": (
+    "size": 1.25rem,
+    "weight": 500,
+    "line-height": 1.8rem,
+    "letter-spacing": 0.005em,
+    "font-family": $heading-font-family
+  ),
+  "subtitle-1": (
+    "size": 1.2rem,
+    "weight": 500,
+    "line-height": 1.5rem,
+    "letter-spacing": 0.009375em,
+    "font-family": $body-font-family
+  ),
+  "subtitle-2": (
+    "size": 1rem,
+    "weight": 500,
+    "line-height": 1.5rem,
+    "letter-spacing": 0.0071428571em,
+    "font-family": $body-font-family
+  ),
+  "body-1": (
+    "size": 1rem,
+    "weight": 400,
+    "letter-spacing": 0.03em,
+    "line-height": 1.5rem,
+    "font-family": $body-font-family
+  ),
+  "body-2": (
+    "size": 0.875rem,
+    "weight": 400,
+    "letter-spacing": 0.018em,
+    "line-height": 1.5rem,
+    "font-family": $body-font-family
+  ),
+  "caption": (
+    "size": 0.625rem,
+    "weight": 300,
+    "letter-spacing": 0.02em,
+    "line-height": 1.25rem,
+    "font-family": $body-font-family
+  ),
+  "overline": (
+    "size": 0.5rem,
+    "weight": 300,
+    "letter-spacing": normal,
+    "line-height": 1rem,
+    "font-family": $body-font-family
+  )
+);
+
+//root
+// $border-radius-root: 8px;
+//list
+// $list-item-dense-title-font-size: 1rem;
+
+//button
+$btn-font-weight: 400;
+$btn-letter-spacing: 0.02em;
+$btn-font-sizes: (
+  "x-small": 0.625rem,
+  "small": 0.75rem,
+  "default": 0.825rem,
+  "large": 1rem,
+  "x-large": 1.2rem
+);
+$btn-focus-opacity: 0.18;
+$btn-active-opacity: 0.1;
+
+//input form
+// $input-font-size: 18px;
+
+//elevation
+$shadow-color: rgb(35, 69, 112);
+$shadow-key-umbra-opacity: rgba(35, 69, 112, 0.08);
+$shadow-key-penumbra-opacity: rgba(35, 69, 112, 0.07);
+$shadow-key-ambient-opacity: rgba(35, 69, 112, 0.06);
+
+//card
+$card-border-radius: 8px;
+
+//date picker
+// $date-picker-table-font-size: 16px;
+
+@import "~vuetify/src/styles/styles.sass";

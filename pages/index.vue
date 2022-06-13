@@ -49,21 +49,23 @@
         </div>
         <v-btn @click="startCountdown">restart</v-btn>
         <v-divider></v-divider>
+        <v-flex></v-flex>
       </v-card>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
-import EasyCamera from "easy-vue-camera";
-import camera from "/components/camera";
+// import EasyCamera from "easy-vue-camera";
+import camera from "@/components/camera";
 import VueCountdown from "@chenfengyuan/vue-countdown";
-import loadingIcon from "/assets/item/loading_icon.gif";
+import loadingIcon from "@/assets/images/item/loading_icon.gif";
 export default {
   components: {
-    "v-easy-camera": EasyCamera,
+    // "v-easy-camera": EasyCamera,
     camera,
     VueCountdown
+    // 'el-camera':elCamera
   },
   asyncData({ params, query }) {
     return {
