@@ -1,0 +1,20 @@
+@mixin gradient-button1 {
+    // text-transform: capitalize !important;
+    color: #FFF !important;
+    background: linear-gradient(90deg, var(--v-secondary-base) 0%, var(--v-primary-base)100%) !important;
+}
+
+@mixin gradient-button1-rev {
+    // text-transform: capitalize !important;
+    color: #FFF !important;
+    background: linear-gradient(90deg, var(--v-primary-base) 0%, var(--v-secondary-base) 100%) !important;
+}
+
+
+.gradient-base {
+    @include gradient-button1();
+}
+
+.gradient-base-reverse {
+    @include gradient-button1-rev();
+}

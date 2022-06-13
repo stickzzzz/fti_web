@@ -1,0 +1,65 @@
+<template>
+  <v-select
+    v-bind="$attrs"
+    v-on="$listeners"
+    :value="value"
+    :background-color="backgroundColor"
+    flat
+    solo
+    style="font-weight: 500"
+    :items="items"
+     height="60"
+  >
+  </v-select>
+  <!-- <v-btn
+    v-bind="$attrs"
+    v-on="$listeners"
+    :ripple="false"
+    :color="$attrs.color || 'primary'"
+    :class="`text-capitalize ${className} ${$attrs.class}`"
+  >
+    <template
+      v-for="(_, name) in $scopedSlots"
+      :slot="name"
+      slot-scope="slotData"
+    >
+      <slot :name="name" v-bind="slotData"></slot>
+    </template>
+    <slot v-for="(_, name) in $slots" :name="name" :slot="name"></slot>
+  </v-btn> -->
+</template>
+<script>
+export default {
+  name: "VCustomSelect",
+  model: {
+    event: "input",
+    value: "value",
+  },
+  props: {
+    value: {
+      type: [String, Number],
+      default: null,
+    },
+    backgroundColor: {
+      type: String,
+      default: "#F1F1F3",
+    },
+    items: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  data() {
+    return {};
+  },
+  watch: {
+    value(to) {
+      console.log(to);
+    },
+  },
+  mounted() {
+    console.log(this.$attrs);
+    // console.log("VCustomBtn mounted");
+  },
+};
+</script>
