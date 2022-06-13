@@ -40,7 +40,9 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/vuetify'
+    '@/plugins/vuetify',
+    { src: "@/plugins/vue-easy-camera", ssr: false },
+    { src: "@/plugins/vue-countdown", ssr: false },
   ],
 
   /*
