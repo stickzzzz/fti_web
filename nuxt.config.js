@@ -5,11 +5,13 @@ export default {
   telemetry: false,
   server: {
     host: "localhost",
-    port: 3001
+    port: 3001,
+    // host:0.0.0.0
 
   },
   router: {
     base: "/"
+    // base:"/fti"
   },
   /*
    ** Headers of the page
@@ -123,7 +125,7 @@ export default {
             darken2: "#001527"
           },
           background:{
-            base:"#8E9EAE"
+            base:"#000000"
           }
           
         }

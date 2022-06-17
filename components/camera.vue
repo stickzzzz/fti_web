@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div style="position: relative">
-      <video id="camera-display" autoplay playsinline></video>
+      <video id="camera-display" autoplay></video>
 
       <!-- <v-btn
         style="
@@ -21,9 +21,7 @@
       <v-col cols="12">
       </v-col>
     </v-row> -->
-        <canvas id="picture-preview"></canvas>
-
-    <v-card></v-card>
+    <canvas id="picture-preview"></canvas>
   </v-container>
 </template>
 
@@ -34,10 +32,18 @@ import Camera from "easy-js-camera";
 export default {
   name: "VueCamera",
   components: {
-    "vue-camera": EasyCamera,
+    "vue-camera": EasyCamera
   },
-  props:{
-    snapPicture:{
+  props: {
+    snapPicture: {
+      type: Boolean,
+      default: false
+    },
+    stopTrigger: {
+      type: Boolean,
+      default: false
+    },
+    switchCamera: {
       type: Boolean,
       default: false
     }
@@ -47,16 +53,22 @@ export default {
       picture: null,
       video: null,
       canvas: null,
-      camera: null,
+      camera: null
     };
   },
   watch: {
     picture(to) {
       console.log({ picture: to });
     },
-    snapPicture(to){
-      console.log('snapPicture',to)
+    snapPicture(to) {
+      console.log("snapPicture", to);
       this.snapAsDataUrl();
+    },
+    stopTrigger(to) {
+      this.stopStream();
+    },
+    switchCameraTrigger(to) {
+      this.switchCamera(false);
     }
   },
   mounted() {
@@ -72,8 +84,8 @@ export default {
           {
             type: "image",
             originalContentUrl: "https://niti-bbt-uat.web.app/gsb.png",
-            previewImageUrl: "https://niti-bbt-uat.web.app/gsb.png",
-          },
+            previewImageUrl: "https://niti-bbt-uat.web.app/gsb.png"
+          }
         ]);
       } catch (err) {
         alert(err);
@@ -89,7 +101,27 @@ export default {
             this.video,
             this.canvas
           );
-          this.camera.setVideoConstraints({ width: 300, height: 534 });
+
+          //   console.log('getSettings',this.camera.getSettings())
+          //   this.camera.setVideoConstraints({
+          //     // facingMode: { exact: "user" },
+          //     // width: { min: 300, max: 300 },
+          //     // height: { max: 480, min: 480 }
+          //     facingMode: { exact: "user" },
+          //     aspectRatio:  240 / 480
+          //     // width: 300,
+          //     // height: 480
+          //   });
+          this.camera.setVideoConstraints({
+            video: {
+              facingMode: { exact: "user" },
+              width: { min: 300, max: 300 },
+              height: { max: 480, min: 480 }
+            }
+          });
+          console.log("caemera", this.camera);
+
+          //   this.camera.setVideoSettings({ aspectRatio: 9 / 16 });
           this.camera.start();
         } else {
           alert("Camera NOT SUPPORT");
@@ -98,20 +130,26 @@ export default {
         console.error(err);
       }
     },
-
+    switchCamera(tryAgain = false) {
+      this.camera.switch(tryAgain).catch(() => {
+        if (tryAgain) return; // This line prevents loops. Because the tryAgain may also fail
+        this.camera.switch(true);
+      });
+      //   this.camera.switch(true);
+    },
     async snapAsDataUrl() {
+      //   this.picture = await this.camera.snapAsBlob();
       this.picture = await this.camera.snapAsDataUrl();
       this.stopStream();
     },
-    async startStream(){
+    async startStream() {
       this.camera.start();
     },
-    async stopStream(){
+    async stopStream() {
       this.camera.stop();
-      this.$emit('returnPicture',this.picture)
-    },
-    
-  },
+      this.$emit("returnPicture", this.picture);
+    }
+  }
 };
 </script>
 

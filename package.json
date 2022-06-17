@@ -16,7 +16,8 @@
     "cookie-universal-nuxt": "^2.1.4",
     "easy-js-camera": "^2.1.0",
     "easy-vue-camera": "^1.0.5",
-    "nuxt": "^2.0.0"
+    "nuxt": "^2.0.0",
+    "vue-web-cam": "^1.9.0"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.15.3",
