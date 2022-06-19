@@ -1,19 +1,19 @@
 const target = "staging";
 
-let baseURL = "http://ftiexpo.wisdomcloud.net:3000/v1/api"; //STG
+let baseURL = "https://ftiapi.wisdomcloud.net/v1/api"; //STG
 
 let version = "v0.0.9";
 let port = 3004;
 let hideStatus = false;
 switch (target) {
   case "production":
-    baseURL = "http://ftiexpo.wisdomcloud.net:3000/v1/api"; //PROD
+    baseURL = "https://ftiexpo.wisdomcloud.net:3000/v1/api"; //PROD
     version = "PROD: " + version;
     hideStatus = true;
     break;
   case "staging":
     version = "STG: " + version;
-    baseURL = "http://ftiexpo.wisdomcloud.net:3000/v1/api"; //STG
+    baseURL = "https://ftiapi.wisdomcloud.net/v1/api"; //STG
     port = 3004;
     break;
 
