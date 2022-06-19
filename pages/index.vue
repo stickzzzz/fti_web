@@ -1,28 +1,34 @@
 <template>
-  <v-layout
-    column
+  <div :style="page == 3 ? 'height:100%' : ''">
+    <!-- column
     justify-center
-    align-center
-    :style="page == 3 ? 'height:100%' : ''"
-  >
+    align-center -->
     <div
       v-if="page == 1"
       class="main-card"
       :class="activeFrame ? '' : 'd-none'"
     >
-      <v-img class="frame-img" cover :src="frameImage"></v-img>
+        <!-- :style="`height:${screenHeight}px;width:auto`" -->
+
+      <v-img
+        class="frame-img"
+        :src="frameImage"
+        cover
+        style="height:100%;"
+      ></v-img>
     </div>
     <v-card v-if="page == 1" class="" color="transparent" width="100%">
       <v-card-title>
+        <span class="title-game">{{ titleText }}</span>
         <vue-countdown
           v-if="counting"
           class="counter-time"
           :time="totalTime"
           @end="onCountdownEnd"
-          @progress="handleCountdownProgress"
           v-slot="{ totalSeconds }"
         >
           {{ totalSeconds }}
+          <!-- @progress="handleCountdownProgress" -->
         </vue-countdown>
       </v-card-title>
       <v-card-text>
@@ -155,12 +161,12 @@
     <v-btn
       style="z-index:110;position: fixed; bottom: 5px;right:5px"
       @click="openButtonTab = !openButtonTab"
-      color="white"
+      color="transparent"
       outlined
       dense
-      >tab</v-btn
+      ></v-btn
     >
-  </v-layout>
+  </div>
 </template>
 
 <script>
@@ -185,7 +191,7 @@ export default {
     // 'el-camera':elCamera
   },
   created() {
-    console.log('policy',this.$cookies.get("fti_policy"))
+    // console.log('policy',this.$cookies.get("fti_policy"))
     if (this.$cookies.get("fti_policy") === undefined) {
       this.$router.push("/policy");
     }
@@ -213,6 +219,7 @@ export default {
       openButtonTab: false,
       limitTextSame: "ขออภัย คุณได้ร่วมสนุกกับบูธนี้ไปแล้ว",
       limitText3: "ขออภัย คุณได้ร่วมสนุกครบ 3 บูธไปแล้ว",
+      titleText: "หัวข้อร้านค้า example",
       itemRateList: [
         { play: true, text: "pass", pct: 100 },
         { play: false, text: "no pass", pct: 0 }
@@ -225,6 +232,8 @@ export default {
       loadingIcon,
       imageHeight: "100%",
       imageWidth: "auto",
+      screenHeight: window.innerHeight,
+      screenHeight: window.innerWdith,
       counting: false,
       timeToWin: null,
       picture: null,
@@ -251,6 +260,16 @@ export default {
       } else if (this.page == 2) {
         return frameResultImg;
       }
+    },
+    leftPosition() {
+      let num = 115;
+      if (window.innerHeight > 350) {
+        num + 1;
+      }
+      return `calc(50% + ${num}px)`;
+    },
+    topPosition(){
+      return `calc(50% + ${num}px)`;
     }
   },
   watch: {
@@ -454,20 +473,28 @@ export default {
   // background-attachment: fixed;
   // // background-position: center;
   // background-size: contain;
-  background-color: black;
-  height: 100%;
+  // background-color: black;
+  // position: absolute;
+  // height: 100%;
   // width: 300px;
-  width: 100%;
+  width: auto;
   .frame-img {
     z-index: 100;
     position: absolute;
   }
 }
+.title-game {
+  position: absolute;
+  color: white;
+  top: 5%;
+  left:50px;
+  z-index: 200;
+}
 .counter-time {
   position: absolute;
   color: white;
-  top: 30px;
-  right: 40px;
+  top: 6%;
+  right: 9%;
   z-index: 200;
 }
 
