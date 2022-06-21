@@ -1,15 +1,10 @@
 <template>
-  <div :style="page == 3 ? 'height:100%' : ''">
-    <!-- column
-    justify-center
-    align-center -->
+  <!-- <div :style="page == 3 ? 'height:100%' : ''">
     <div
       v-if="page == 1"
       class="main-card"
       :class="activeFrame ? '' : 'd-none'"
     >
-        <!-- :style="`height:${screenHeight}px;width:auto`" -->
-
       <v-img
         class="frame-img"
         :src="frameImage"
@@ -26,13 +21,13 @@
           :time="totalTime"
           @end="onCountdownEnd"
           v-slot="{ totalSeconds }"
+          @progress="handleCountdownProgress"
         >
           {{ totalSeconds }}
-          <!-- @progress="handleCountdownProgress" -->
         </vue-countdown>
       </v-card-title>
       <v-card-text>
-        <v-sheet class="animate-flicker" color="transparent">
+        <v-sheet class="animate-flicker mt-10" color="transparent">
           <web-cam
             v-if="page == 1"
             ref="webcam"
@@ -42,6 +37,7 @@
             @error="onError"
             @cameras="onCameras"
             @camera-change="onCameraChange"
+            :height="500"
           />
           <v-overlay absolute v-if="showingLoading">
             <div class="d-flex fill-height" style="flex-direction:column">
@@ -51,13 +47,11 @@
         </v-sheet>
       </v-card-text>
       <v-card-actions>
-        <!-- <v-btn @click=""></v-btn> -->
-        <!-- picture {{picture}} -->
       </v-card-actions>
     </v-card>
     <v-card v-if="page == 2" color="transparent" class="px-4" style="">
       <v-card-text>
-        <v-avartar class="pa-3" color="white">
+        <v-avatar class="pa-3" color="white">
           <v-img
             v-if="page == 2"
             :src="resultPicture"
@@ -67,7 +61,7 @@
             style="position:rerative"
           >
           </v-img>
-        </v-avartar>
+        </v-avatar>
       </v-card-text>
       <v-card-actions>
         <v-img :src="panelImg" width="100%" height="auto">
@@ -118,20 +112,6 @@
       style="z-index:110;position: fixed; bottom: 5px;"
       v-if="page !== 2 && openButtonTab"
     >
-      <!-- <v-select
-        v-model="device.deviceId"
-        persistent-hint
-        :items="devices"
-      ></v-select> -->
-      <!-- <select v-model="camera">
-        <option>-- Select Device --</option>
-        <option
-          v-for="device in devices"
-          :key="device.deviceId"
-          :value="device.deviceId"
-          >{{ device.label }}</option
-        >
-      </select> -->
       <v-btn @click="sendPicture">
         Capture Photo
       </v-btn>
@@ -154,9 +134,6 @@
       >
 
       <h2 class="red--text">Time To Win {{ timeToWin }}</h2>
-      <!-- <div class="figure">
-        <v-img :src="img" class="img-responsive"></v-img>
-      </div> -->
     </div>
     <v-btn
       style="z-index:110;position: fixed; bottom: 5px;right:5px"
@@ -164,9 +141,9 @@
       color="transparent"
       outlined
       dense
-      ></v-btn
-    >
-  </div>
+    ></v-btn>
+  </div> -->
+  <div></div>
 </template>
 
 <script>
@@ -192,22 +169,20 @@ export default {
   },
   created() {
     // console.log('policy',this.$cookies.get("fti_policy"))
-    if (this.$cookies.get("fti_policy") === undefined) {
-      this.$router.push("/policy");
-    }
+    // this.$store.commit("set_boothShopCode", this.boothShopCodeQuery);
+    // this.$store.commit("set_isByPass", this.isByPass);
+  console.log('created')
+    this.$router.push(`/notfound`);
   },
   asyncData({ params, query }) {
     return {
-      // boothShopCode: !!params.id ? Number(params.id) : null,
-      boothShopCode: query.boothShopCode ? String(query.boothShopCode) : "",
-      isBypass: query.isBypass ? String(query.isBypass) : false
     };
   },
   data() {
     return {
       img: null,
       imgMock: imgMock.image,
-      isMock: true,
+      isMock: false,
       isLucky: false,
       camera: null,
       deviceId: null,
@@ -227,8 +202,8 @@ export default {
       framePlayImg,
       frameResultImg,
       ftiLogo,
-      random1: 12, // 45
-      random2: 10, // 25
+      random1: 45, // 45
+      random2: 25, // 25
       loadingIcon,
       imageHeight: "100%",
       imageWidth: "auto",
@@ -240,7 +215,7 @@ export default {
       resultPicture: null,
       resultWinner: false,
       totalTime: 0,
-      setTime: 15000,
+      setTime: 60000,
       loadingStage: false,
       openBoxState: false,
       openBoxTime: 3000,
@@ -268,7 +243,7 @@ export default {
       }
       return `calc(50% + ${num}px)`;
     },
-    topPosition(){
+    topPosition() {
       return `calc(50% + ${num}px)`;
     }
   },
@@ -319,12 +294,15 @@ export default {
     },
     async handleCountdownProgress(data) {
       console.log(data.totalSeconds);
+      if (this.isBypass) {
+        this.timeToWin = 50;
+      }
       if (data.totalSeconds == this.timeToWin) {
         await this.sendPicture();
         this.onCountdownEnd();
       }
       if (data.totalSeconds == 0) {
-        await this.showImageGif();
+        this.showImageGif();
       }
     },
     randomStep1() {
@@ -350,22 +328,24 @@ export default {
       this.onCountdownEnd();
       this.loadingStage = true;
       try {
-        let boothShopCode = this.boothShopCode ? this.boothShopCode : "1";
+        let boothShopCode = this.$store.state.boothShopCode
+          ? this.$store.state.boothShopCode
+          : "1";
         this.img = this.$refs.webcam.capture();
         let form = {
           import: this.isMock ? this.imgMock : this.img,
           isBypass: this.isBypass
         };
-        // let res = await this.$axios.$post(
-        //   `/rewardCheck/${boothShopCode}/uploadv2`,
-        //   form
-        // );
-        let res = { code: 2000, responseObject: { isLucky: this.isLucky } };
+        let res = await this.$axios.$post(
+          `/rewardCheck/${boothShopCode}/uploadv2`,
+          form
+        );
+        // let res = { code: 2000, responseObject: { isLucky: this.isLucky } };
         // console.log("sendPicture", res);
         if (res?.code === 2000) {
-          // this.resultPicture =
-          //   "data:image/png;base64," + res.responseObject.ImagesMergeLayer;
-          this.resultPicture = this.imgMock;
+          this.resultPicture =
+            "data:image/png;base64," + res.responseObject.ImagesMergeLayer;
+          // this.resultPicture = this.imgMock;
           // this.page = 3;
           this.resultWinner = res.responseObject.isLucky;
           if (res.responseObject.isLucky) {
@@ -457,6 +437,7 @@ export default {
     },
     resetCookie() {
       this.$cookies.remove("fti_booth_winner");
+      this.$cookies.remove("fti_policy");
     },
     downloadImage() {
       var a = document.createElement("a"); //Create <a>
@@ -487,7 +468,7 @@ export default {
   position: absolute;
   color: white;
   top: 5%;
-  left:50px;
+  left: 50px;
   z-index: 200;
 }
 .counter-time {

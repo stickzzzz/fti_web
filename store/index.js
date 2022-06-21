@@ -6,6 +6,8 @@ const DEFAULT_TIMEOUT = 5000;
 
 export const state = () => ({
   version: "1.8.6",
+  boothShopCode:null,
+  isByPass:false,
   isLoggedIn: false,
   accessToken: "",
   locale: "th",
@@ -313,5 +315,12 @@ export const mutations = {
   },
   set_faqCount(state, value) {
     state.faqCount = value;
-  }
+  },
+  set_boothShopCode(state, value) {
+    state.boothShopCode = value;
+  },
+  set_isByPass(state, value) {
+    state.isByPass = value;
+  },
+  
 };
