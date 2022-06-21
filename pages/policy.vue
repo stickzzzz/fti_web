@@ -1,9 +1,13 @@
 <template>
-  <div style="position:relative;height:auto">
+  <!-- <div style="position:relative;height: 100%;"> -->
     <!-- :style="`backgroundImage:url(${terms_bg})`" -->
 
-    <div class="policy-page" style="height:100%">
-      <div class="" style="">
+    <div class="policy-page" style="overflow: hidden;"
+    :style="`height:${screenHieight}px`"
+    >
+      <div class="d-flex" style="" 
+    :style="`height:100%`"
+      >
         <v-img class="terms-bg" contain :src="terms_bg"></v-img>
       </div>
       <v-card
@@ -70,7 +74,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </div>
+    <!-- </div> -->
   </div>
 </template>
 <script>
@@ -101,7 +105,9 @@ export default {
         }
       ],
       terms_bg,
-      cancelDialog: false
+      cancelDialog: false,
+      screenHieight: window.innerHeight
+
     };
   },
   methods: {
