@@ -165,6 +165,9 @@
         <!-- <v-btn @click="resetCookie">
         reset cookie
       </v-btn> -->
+        <v-btn @click="saveBoothCode">
+          saveCode
+        </v-btn>
         <v-btn @click="isMock = !isMock"
           >Mock {{ isMock ? "on" : "off" }}</v-btn
         >
@@ -208,7 +211,9 @@
       >
         <v-card>
           <v-card-title>บางอย่างผิดพลาด</v-card-title>
-          <v-card-text> กรุณาสแกน QRcode ใหม่ {{ warningText ? `(${warningText})` : ''}} </v-card-text>
+          <v-card-text>
+            กรุณาสแกน QRcode ใหม่ {{ warningText ? `(${warningText})` : "" }}
+          </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
@@ -270,7 +275,7 @@ export default {
         this.$router.push("/policy");
       }
     } else {
-        this.goErrorPage();
+      this.goErrorPage();
     }
   },
   asyncData({ params, query }) {
@@ -490,9 +495,9 @@ export default {
           // this.openWarningDialog('');
         }
       } catch (error) {
-          this.goErrorPage(error?.message2 ? error?.message2 :'');
+        this.goErrorPage(error?.message2 ? error?.message2 : "");
         // this.openWarningDialog();
-        
+
         console.error(error);
       } finally {
         this.loadingStage = false;
@@ -505,12 +510,22 @@ export default {
       // this.counting = false;
     },
     checkBoothIdList() {
+      let temps = [
+        {
+          date: "date1",
+          boothShopCodes: [
+            {
+              boothShopCode: "code"
+            }
+          ]
+        }
+      ];
       this.boothCookieList = this.$cookies.get("fti_booth_winner")
         ? this.$cookies.get("fti_booth_winner")
         : [];
-        // let found = this.boothCookieList.find(
-        //   item => item.boothShopCode == this.boothShopCode
-        // );
+      // let found = this.boothCookieList.find(
+      //   item => item.boothShopCode == this.boothShopCode
+      // );
       if (this.boothCookieList && this.boothCookieList.length < 3) {
         let found = this.boothCookieList.find(
           item => item.boothShopCode == this.boothShopCode
@@ -526,11 +541,10 @@ export default {
       console.log("checkBoothIdList", this.boothCookieList);
     },
     saveBoothCode(boothShopCode) {
-        let currentDate = new Date();
+    //   let currentDate = this.formatDate(new Date());
+    //   console.log("date", currentDate);
       let obj = {
-        boothShopCode: this.boothShopCode,
-        status: "win",
-
+        boothShopCode: this.boothShopCode
       };
       this.boothCookieList.push(obj);
 
@@ -546,11 +560,9 @@ export default {
       this.page = 3;
     },
     showImageGif() {
-      console.log("showImageGif 1");
       this.showingLoading = true;
       setTimeout(() => {
         this.showingLoading = false;
-        console.log("showImageGif 2");
         this.page = 2;
       }, 3000);
     },
@@ -591,15 +603,20 @@ export default {
       a.click(); //Downloaded file
     },
     openWarningDialog(text = "") {
-    //   console.log("error", text);
+      //   console.log("error", text);
       this.warningDialog = true;
       this.warningText = text;
     },
-    goErrorPage(text){
-
+    goErrorPage(text) {
       this.$router.push(`/notfound?text=${text}`);
-
-    }
+    },
+    // formatDate(date) {
+    //   return [
+    //     date.getFullYear(),
+    //     padTo2Digits(date.getMonth() + 1),
+    //     padTo2Digits(date.getDate())
+    //   ].join("-");
+    // }
   }
 };
 </script>
