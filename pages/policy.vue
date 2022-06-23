@@ -45,7 +45,7 @@
         <v-spacer></v-spacer>
         <v-btn
           class="mx-5 white--text"
-          color="#063791"
+          color="primary"
           @click="acceptPolicy"
           width="120"
           >ยอมรับ</v-btn

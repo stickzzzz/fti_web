@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="not-support" :style="page == 3 ? 'height:100%' : ''">
+    <div v-if="$vuetify.breakpoint.mobile" class="not-support" :style="page == 3 ? 'height:100%' : ''">
       <!-- column
     justify-center
     align-center -->
@@ -101,9 +101,8 @@
           <v-img
             v-if="page == 2"
             :src="resultPicture"
-            contain
             :width="'auto'"
-            :height="400"
+            :height="450"
             style="position:rerative"
           >
           </v-img>
@@ -124,7 +123,7 @@
                 <v-btn
                   class="ma-auto"
                   style="width:90%"
-                  color="#00D0FF"
+                  color="primary"
                   @click="downloadImage"
                   >บันทึก</v-btn
                 >
@@ -140,7 +139,7 @@
         height="100%"
       >
         <div style="width:100%;height:100%;margin-top:150px" class="d-block">
-          <v-img class="ma-auto my-10" :src="ftiLogo" width="80%" height="auto">
+          <v-img class="ma-auto my-10" :src="ftiLogo" width="50%" height="auto">
             <div class="d-flex align-center justify-center" style="height:100%">
               <div class="d-flex" style="width:100% "></div>
             </div>
@@ -240,7 +239,7 @@
         </v-card>
       </v-dialog>
     </div>
-    <div class="notSupportDialog">แอพพลิเคชั่นไม่รับรองแนวนอน</div>
+    <div v-if="!$vuetify.breakpoint.mobile" class="notSupportDialog">แอพพลิเคชั่นไม่รับรองแนวนอน</div>
   </div>
 </template>
 
@@ -259,7 +258,6 @@ import ftiLogo from "@/assets/images/item/fti_logo.png";
 import scanImg1 from "@/assets/images/item/radar.gif";
 import titleLabelImg from "@/assets/images/item/text_label.png";
 import counterImg from "@/assets/images/item/counter.png";
-import frame1 from "@/assets/images/item/frame5.png";
 import logoMotionImg from "@/assets/images/item/logo_motion.gif";
 
 export default {
@@ -306,7 +304,6 @@ export default {
       imgMock: imgMock.image,
       logoMotionImg,
       scanImg1,
-      frame1,
       titleLabelImg,
       counterImg,
       isMock: false,
