@@ -1,82 +1,84 @@
 <template>
   <!-- <div style="position:relative;height: 100%;"> -->
-  <!-- :style="`backgroundImage:url(${terms_bg})`" -->
-  <!-- " -->
-  <!-- style="overflow: hidden;"
-    :style="`height:${screenHieight}px`" -->
-  <div class="policy-page">
-    <div class="d-flex" style="" :style="`height:auto`">
-      <v-img class="terms-bg" :src="terms_bg"></v-img>
-    </div>
-    <!-- <div
-      class="mb-7 mx-2"
-      color="transparent"
-      flat
-    > -->
-    <!-- :style="`height:calc(${screenHieight}px - 360px)`" -->
+    <!-- :style="`backgroundImage:url(${terms_bg})`" -->
 
-    <v-card class="main-card" color="transparent" flat>
-      <v-card
-      class="mx-3 pa-2"
-        color="#404040"
-        style="opacity:0.8;overflow: auto;"
-        scroll
-        max-height="200"
-      >
-        <div
-          v-for="(text, i) in policyTexts"
-          :key="i"
-          class="white--text"
-          :style="
-            `${
-              text.isTopic
-                ? 'font-size:14px'
-                : 'font-size:12px;margin-bottom:5px'
-            } `
-          "
-        >
-          {{ text.text }}
-        </div>
-      </v-card>
-      <v-card-actions class="ma-2">
-        <v-btn class="mx-5" color="white" @click="cancel" width="120"
-          >ยกเลิก</v-btn
-        >
-        <v-spacer></v-spacer>
-        <v-btn
-          class="mx-5 white--text"
-          color="#063791"
-          @click="acceptPolicy"
-          width="120"
-          >ยอมรับ</v-btn
-        >
-      </v-card-actions>
-    </v-card>
-    <!-- </div> -->
-    <v-dialog
-      v-model="cancelDialog"
-      max-width="480"
-      transition="fade-transition"
-      persistent
+    <div class="policy-page" style="overflow: hidden;"
+    :style="`height:${screenHieight}px`"
     >
-      <v-card>
-        <v-card-title>การยินยอมเงื่อนไขการใช้งาน</v-card-title>
-        <v-card-text>
-          ท่านต้องยินยอมเงื่อนไขการใช้งานเว็บไซต์ เพื่อเข้าร่วมเล่นเกม
-        </v-card-text>
-        <v-card-actions>
+      <div class="d-flex" style="" 
+    :style="`height:100%`"
+      >
+        <v-img class="terms-bg" contain :src="terms_bg"></v-img>
+      </div>
+      <v-card
+        class="mb-7 mx-2"
+        color="transparent"
+        style="position:fixed;bottom:5px"
+        flat
+      >
+        <v-card
+          class="main-card"
+          color="black"
+          style="opacity:0.8"
+          height="230"
+          scroll
+          flat
+        >
+          <v-card-text class="my-2">
+            <div
+              v-for="(text, i) in policyTexts"
+              :key="i"
+              class="white--text"
+              :style="
+                `${
+                  text.isTopic
+                    ? 'font-size:14px'
+                    : 'font-size:12px;margin-bottom:5px'
+                } `
+              "
+            >
+              {{ text.text }}
+            </div>
+          </v-card-text>
+        </v-card>
+        <v-card class="d-flex mt-3" color="transparent" flat>
+          <v-btn class="mx-5" color="white" @click="cancel" width="40%"
+            >ยกเลิก</v-btn
+          >
           <v-spacer></v-spacer>
-          <v-btn class="primary" :ripple="false" @click="cancelDialog = false">
-            ตกลง
-          </v-btn>
-        </v-card-actions>
+          <v-btn class="mx-5" color="#00D0FF" @click="acceptPolicy" width="40%"
+            >ตกลง</v-btn
+          >
+        </v-card>
       </v-card>
-    </v-dialog>
+      <v-dialog
+        v-model="cancelDialog"
+        max-width="480"
+        transition="fade-transition"
+        persistent
+      >
+        <v-card>
+          <v-card-title>การยินยอมเงื่อนไขการใช้งาน</v-card-title>
+          <v-card-text>
+            ท่านต้องยินยอมเงื่อนไขการใช้งานเว็บไซต์ เพื่อเข้าร่วมเล่นเกม
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              class="primary"
+              :ripple="false"
+              @click="cancelDialog = false"
+            >
+              ตกลง
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     <!-- </div> -->
   </div>
 </template>
 <script>
-import terms_bg from "@/assets/images/item/policy_bg.png";
+import terms_bg from "@/assets/images/item/terms_bg.png";
 
 export default {
   data() {
@@ -100,11 +102,12 @@ export default {
           text:
             "ส่องกล้องหาของขวัญภายในงาน ภายใน 60 วินาที ถ้าคุณได้รับของรางวัล คุณจำเป็นต้องบันทึกรูปภาพหรือ Cap screen หน้าจอเพื่อเอารูปไปรับรางวัลตามที่กำหนด",
           isTopic: false
-        },
+        }
       ],
       terms_bg,
       cancelDialog: false,
       screenHieight: window.innerHeight
+
     };
   },
   methods: {
@@ -128,7 +131,7 @@ export default {
   }
   .main-card {
     // position:fixed;bottom:5px
-    // overflow: auto;
+    overflow: auto;
     .policy-text {
       white-space: pre-wrap;
     }

@@ -26,6 +26,19 @@
           style="opacity:0.8"
         ></v-img>
       </div>
+        <div v-if="showingLoading"  class="d-flex gift-image">
+          <v-img width="100%" height="100%" style="" :src="giftIcon"></v-img>
+        </div>
+
+      <!-- <div v-if="page == 1 && !showingLoading" class="logo-random-image" >
+        <v-img
+          :src="logoMotionImg"
+          style="opacity:0.8;margin:auto"
+          width="80%"
+          height="auto"
+        >
+        </v-img>
+      </div> -->
       <v-card v-if="page == 1" class="" color="transparent" width="100%">
         <v-card-title>
           <!-- <span class="title-game" style="font-size:18px">{{ titleText }}</span> -->
@@ -71,11 +84,11 @@
               @camera-change="onCameraChange"
               height="100%"
             />
-            <v-overlay absolute v-if="showingLoading">
-              <div class="d-flex fill-height" style="flex-direction:column">
-                <v-img width="100%" height="auto" :src="loadingIcon"></v-img>
+            <!-- <v-overlay  v-if="showingLoading">
+              <div class="d-flex" style="">
+                <v-img width="100%" height="auto" :src="giftIcon"></v-img>
               </div>
-            </v-overlay>
+            </v-overlay> -->
           </v-sheet>
         </v-card-text>
         <v-card-actions>
@@ -162,9 +175,9 @@
           Start Camera
         </v-btn>
         <!-- <v-btn @click="activeFrame = !activeFrame">frame</v-btn> -->
-        <!-- <v-btn @click="resetCookie">
-        reset cookie
-      </v-btn> -->
+        <v-btn @click="resetCookie">
+          reset cookie
+        </v-btn>
         <v-btn @click="saveBoothCode">
           saveCode
         </v-btn>
@@ -236,7 +249,7 @@
 import imgMock from "@/assets/images/item/imgMock.json";
 import camera from "@/components/camera";
 import VueCountdown from "@chenfengyuan/vue-countdown";
-import loadingIcon from "@/assets/images/item/gift-animaton.gif";
+import giftIcon from "@/assets/images/item/gift-animaton.gif";
 import { WebCam } from "vue-web-cam";
 import { find, head } from "lodash";
 import framePlayImg from "@/assets/images/item/frame-play.png";
@@ -244,10 +257,11 @@ import frameResultImg from "@/assets/images/item/frame.png";
 import panelImg from "@/assets/images/item/panelImg.svg";
 import ftiLogo from "@/assets/images/item/fti_logo.png";
 import scanImg1 from "@/assets/images/item/radar.gif";
-import scanImg2 from "@/assets/images/item/scanImg.gif";
 import titleLabelImg from "@/assets/images/item/text_label.png";
 import counterImg from "@/assets/images/item/counter.png";
 import frame1 from "@/assets/images/item/frame5.png";
+import logoMotionImg from "@/assets/images/item/logo_motion.gif";
+
 export default {
   components: {
     // "v-easy-camera": EasyCamera,
@@ -260,7 +274,7 @@ export default {
   created() {
     // console.log('policy',this.$cookies.get("fti_policy"))
     if (this.boothShopCode !== null) {
-      console.log("boothShopCode", this.boothShopCode);
+      //   console.log("boothShopCode", this.boothShopCode);
       let splitTexts = this.boothShopCode.split("__1");
       this.$store.commit(
         "set_boothShopCode",
@@ -290,8 +304,8 @@ export default {
     return {
       img: null,
       imgMock: imgMock.image,
+      logoMotionImg,
       scanImg1,
-      scanImg2,
       frame1,
       titleLabelImg,
       counterImg,
@@ -315,9 +329,10 @@ export default {
       framePlayImg,
       frameResultImg,
       ftiLogo,
-      random1: 45, // 45
-      random2: 25, // 25
-      loadingIcon,
+      random1: 30, // 45
+      random2: 10, // 25
+      byPassTime: 30,
+      giftIcon,
       imageHeight: "100%",
       imageWidth: "auto",
       screenHeight: window.innerHeight,
@@ -328,14 +343,13 @@ export default {
       resultPicture: null,
       resultWinner: 0, // 0 ,win 1,lose 2
       totalTime: 0,
-      setTime: 60000,
+      setTime: 40000,
       tempTotalSeconds: 0,
       loadingStage: false,
       openBoxState: false,
       openBoxTime: 3000,
-      boothCookieList: [],
+      boothShopCodeDetail: { list: [], createDate: null },
       showingLoading: false,
-      byPassBoothId: "okpd",
       switchCameraTrigger: false,
       warningDialog: false,
       warningText: "",
@@ -344,11 +358,7 @@ export default {
   },
   computed: {
     scanImg() {
-      if (this.scanIconSelect == 1) {
-        return scanImg1;
-      } else {
-        return scanImg2;
-      }
+      return scanImg1;
     },
     device() {
       return find(this.devices, n => n.deviceId == this.deviceId);
@@ -425,9 +435,8 @@ export default {
     },
     async handleCountdownProgress(data) {
       this.tempTotalSeconds = data.tempTotalSeconds;
-      console.log(data.totalSeconds);
       if (this.$store.state.isByPass) {
-        this.timeToWin = 50;
+        this.timeToWin = this.byPassTime;
       }
       if (data.totalSeconds == this.timeToWin && this.resultWinner == 0) {
         await this.sendPicture();
@@ -480,7 +489,7 @@ export default {
         if (res?.code === 2000) {
           this.resultPicture =
             "data:image/png;base64," + res.responseObject.ImagesMergeLayer;
-          //   this.resultPicture = this.imgMock;
+          // this.resultPicture = this.imgMock;
           // this.page = 3;
           this.resultWinner = res.responseObject.isLucky ? 1 : 2;
           if (res.responseObject.isLucky) {
@@ -510,24 +519,29 @@ export default {
       // this.counting = false;
     },
     checkBoothIdList() {
-      let temps = [
-        {
-          date: "date1",
-          boothShopCodes: [
-            {
-              boothShopCode: "code"
-            }
-          ]
-        }
-      ];
-      this.boothCookieList = this.$cookies.get("fti_booth_winner")
+      let currentDate = new Date();
+
+      this.boothShopCodeDetail = this.$cookies.get("fti_booth_winner")
         ? this.$cookies.get("fti_booth_winner")
-        : [];
-      // let found = this.boothCookieList.find(
-      //   item => item.boothShopCode == this.boothShopCode
-      // );
-      if (this.boothCookieList && this.boothCookieList.length < 3) {
-        let found = this.boothCookieList.find(
+        : { createDate: null, list: [] };
+      let current = new Date();
+      let first = this.boothShopCodeDetail.createDate
+        ? this.boothShopCodeDetail.createDate
+        : null;
+      if (this.boothShopCodeDetail.createDate) {
+        // have cookie
+        if (this.checkSameDay(this.boothShopCodeDetail.createDate, current)) {
+          // วันเดียวกัน
+        } else {
+          this.$cookies.remove("fti_booth_winner");
+        }
+      }
+
+      if (
+        this.boothShopCodeDetail.list &&
+        this.boothShopCodeDetail.list.length < 3
+      ) {
+        let found = this.boothShopCodeDetail.list.find(
           item => item.boothShopCode == this.boothShopCode
         );
         if (found) {
@@ -541,18 +555,25 @@ export default {
       console.log("checkBoothIdList", this.boothCookieList);
     },
     saveBoothCode(boothShopCode) {
-    //   let currentDate = this.formatDate(new Date());
-    //   console.log("date", currentDate);
+      // let currentDate = this.formatDate(new Date());
+      let currentDate = new Date();
+
+      let c;
+      //   console.log("date", currentDate);
       let obj = {
         boothShopCode: this.boothShopCode
       };
-      this.boothCookieList.push(obj);
+      this.boothShopCodeDetail.list.push(obj);
 
-      this.$cookies.set("fti_booth_winner", this.boothCookieList, {
-        path: "/",
-        maxAge: 60 * 60 * 24 * 7
-      });
-      // console.log("saveBoothCode", this.boothCookieList);
+      this.$cookies.set(
+        "fti_booth_winner",
+        { createDate: currentDate, list: this.boothShopCodeDetail.list },
+        {
+          path: "/",
+          maxAge: 60 * 60 * 24 * 1
+        }
+      );
+      console.log("saveBoothCode", this.boothCookieList);
     },
     sameBoothShop(text) {
       console.log("เล่นไปแล้ว", text);
@@ -616,7 +637,27 @@ export default {
     //     padTo2Digits(date.getMonth() + 1),
     //     padTo2Digits(date.getDate())
     //   ].join("-");
-    // }
+    // },
+    checkSameDay(first, second) {
+      let date1 = new Date(first);
+      console.log(
+        "first",
+        date1.getFullYear(),
+        date1.getMonth(),
+        date1.getDate()
+      );
+      console.log(
+        "second",
+        second.getFullYear(),
+        second.getMonth(),
+        second.getDate()
+      );
+      return (
+        date1.getFullYear() === second.getFullYear() &&
+        date1.getMonth() === second.getMonth() &&
+        date1.getDate() === second.getDate()
+      );
+    }
   }
 };
 </script>
@@ -645,6 +686,25 @@ body {
   left: calc(50% - 130px);
 
   z-index: 130;
+}
+.logo-random-image {
+  width: 100%;
+  position: absolute;
+  top: 15%;
+  // left: calc(50% - 130px);
+  // left: 20%;
+
+  z-index: 120;
+}
+.gift-image{
+  position: fixed;
+  top: -3px;
+  bottom: -3px;
+  left: -3px;
+  right: -3px;
+  // width: 100%;
+  // height: 100%;
+  z-index:300;
 }
 .title-game {
   position: absolute;
