@@ -26,9 +26,9 @@
           style="opacity:0.8"
         ></v-img>
       </div>
-        <div v-if="showingLoading"  class="d-flex gift-image">
-          <v-img width="100%" height="100%" style="" :src="giftIcon"></v-img>
-        </div>
+      <div v-if="showingLoading" class="d-flex gift-image">
+        <v-img width="100%" height="100%" style="" :src="giftIcon"></v-img>
+      </div>
 
       <!-- <div v-if="page == 1 && !showingLoading" class="logo-random-image" >
         <v-img
@@ -518,22 +518,30 @@ export default {
       this.totalTime = 0;
       // this.counting = false;
     },
-    checkBoothIdList() {
-      let currentDate = new Date();
-
-      this.boothShopCodeDetail = this.$cookies.get("fti_booth_winner")
+    assignCookieWinner(cookieName) {
+      return this.$cookies.get("fti_booth_winner")
         ? this.$cookies.get("fti_booth_winner")
         : { createDate: null, list: [] };
+    },
+    checkBoothIdList() {
+      let currentDate = new Date();
+      this.boothShopCodeDetail = this.assignCookieWinner();
       let current = new Date();
       let first = this.boothShopCodeDetail.createDate
         ? this.boothShopCodeDetail.createDate
         : null;
+      let yesDay = this.createYesterday();
+      console.log("yesDay", yesDay);
       if (this.boothShopCodeDetail.createDate) {
         // have cookie
+        // if (this.checkSameDay(yesDay, current)) {
         if (this.checkSameDay(this.boothShopCodeDetail.createDate, current)) {
           // วันเดียวกัน
+          console.log("วันเดียวกัน");
         } else {
+          console.log("คนละวัน");
           this.$cookies.remove("fti_booth_winner");
+          this.boothShopCodeDetail = this.assignCookieWinner();
         }
       }
 
@@ -657,6 +665,11 @@ export default {
         date1.getMonth() === second.getMonth() &&
         date1.getDate() === second.getDate()
       );
+    },
+    createYesterday() {
+      let date = new Date("2020-06-22");
+      console.log("yes", date);
+      return date;
     }
   }
 };
@@ -696,7 +709,7 @@ body {
 
   z-index: 120;
 }
-.gift-image{
+.gift-image {
   position: fixed;
   top: -3px;
   bottom: -3px;
@@ -704,7 +717,7 @@ body {
   right: -3px;
   // width: 100%;
   // height: 100%;
-  z-index:300;
+  z-index: 300;
 }
 .title-game {
   position: absolute;
