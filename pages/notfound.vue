@@ -7,7 +7,10 @@
     >
       <div class="not-found-text white--text ma-auto">
         <div class="ma-auto">
-          มีบางอย่างผิดพลาด {{textError}}
+          มีบางอย่างผิดพลาด 
+        </div>
+        <div class="ma-auto">
+          {{textError}}
         </div>
         <div class="ma-auto">
           กรุณาสแกน QRcode ใหม่
