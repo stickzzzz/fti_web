@@ -17,11 +17,11 @@
 
     <v-card class="main-card" color="transparent" flat>
       <v-card
-      class="mx-3 pa-2"
+      class="mx-3 mt-3 pa-2 detail-box"
         color="#404040"
         style="opacity:0.8;overflow: auto;"
         scroll
-        max-height="200"
+        :height="screenHieight-455"
       >
         <div
           v-for="(text, i) in policyTexts"
@@ -113,7 +113,7 @@ export default {
         path: "/",
         maxAge: 60 * 60 * 24 * 7
       });
-      this.$router.push(`/${this.$store.state.boothShopCode}`);
+      this.$router.push(`/${this.$store.state.boothShopCode}${this.$store.state.isByPass?'__1':''}`);
     },
     cancel() {
       this.cancelDialog = true;
@@ -131,6 +131,10 @@ export default {
     // overflow: auto;
     .policy-text {
       white-space: pre-wrap;
+    }
+    .detail-box{
+        // height:calc(50% - 50px) !important;
+        // height: 50%;
     }
   }
 }

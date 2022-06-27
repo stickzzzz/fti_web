@@ -1,36 +1,34 @@
 <template>
   <div>
-    <div v-if="$vuetify.breakpoint.mobile" class="not-support" :style="page == 3 ? 'height:100%' : ''">
-      <!-- column
-    justify-center
-    align-center -->
-      <div
-        v-if="page == 1"
-        class="main-card"
-        :class="activeFrame ? '' : 'd-none'"
-      >
-        <!-- :style="`height:${screenHeight}px;width:auto`" -->
+    <!-- <span class="white--text">
+     xs {{this.$vuetify.breakpoint.xs}}</span> -->
+    <div v-if="$vuetify.breakpoint.xs">
+      <div class="not-support" :style="page == 3 ? 'height:100%' : ''">
+        <div
+          v-if="page == 1"
+          class="main-card"
+          :class="activeFrame ? '' : 'd-none'"
+        >
+          <v-img
+            class="frame-img"
+            :src="frameImage"
+            cover
+            style="height:100%;"
+          ></v-img>
+        </div>
+        <div v-if="page == 1 && !showingLoading" class="scan-image">
+          <v-img
+            :src="scanImg"
+            width="260"
+            height="auto"
+            style="opacity:0.8"
+          ></v-img>
+        </div>
+        <div v-if="showingLoading" class="d-flex gift-image">
+          <v-img width="100%" height="100%" style="" :src="giftIcon"></v-img>
+        </div>
 
-        <v-img
-          class="frame-img"
-          :src="frameImage"
-          cover
-          style="height:100%;"
-        ></v-img>
-      </div>
-      <div v-if="page == 1 && !showingLoading" class="scan-image">
-        <v-img
-          :src="scanImg"
-          width="260"
-          height="auto"
-          style="opacity:0.8"
-        ></v-img>
-      </div>
-      <div v-if="showingLoading" class="d-flex gift-image">
-        <v-img width="100%" height="100%" style="" :src="giftIcon"></v-img>
-      </div>
-
-      <!-- <div v-if="page == 1 && !showingLoading" class="logo-random-image" >
+        <!-- <div v-if="page == 1 && !showingLoading" class="logo-random-image" >
         <v-img
           :src="logoMotionImg"
           style="opacity:0.8;margin:auto"
@@ -39,207 +37,258 @@
         >
         </v-img>
       </div> -->
-      <v-card v-if="page == 1" class="" color="transparent" width="100%">
-        <v-card-title>
-          <!-- <span class="title-game" style="font-size:18px">{{ titleText }}</span> -->
-          <v-img
-            class="title-label-game mt-3"
-            :src="titleLabelImg"
-            :width="300"
-            hieght="auto"
-          ></v-img>
-          <v-img
-            v-if="counting"
-            class="counter-time d-flex align-center justify-center"
-            :src="counterImg"
-            :width="70"
-            hieght="auto"
-          >
-            <!--
-             -->
-            <vue-countdown
-              class="white--text"
-              :style="
-                tempTotalSeconds >= 10 ? 'margin-left:24px' : 'margin-left:28px'
-              "
-              :time="totalTime"
-              @end="onCountdownEnd"
-              v-slot="{ totalSeconds }"
-              @progress="handleCountdownProgress"
+        <v-card v-if="page == 1" class="" color="transparent" width="100%">
+          <v-card-title>
+            <!-- <span class="title-game" style="font-size:18px">{{ titleText }}</span> -->
+            <v-img
+              class="title-label-game mt-3"
+              :src="titleLabelImg"
+              :width="300"
+              hieght="auto"
+            ></v-img>
+            <v-img
+              v-if="counting"
+              class="counter-time d-flex align-center justify-center"
+              :src="counterImg"
+              :width="70"
+              hieght="auto"
             >
-              {{ totalSeconds }}
-            </vue-countdown>
-          </v-img>
-        </v-card-title>
-        <v-card-text>
-          <v-sheet class="animate-flicker" color="transparent">
-            <web-cam
-              v-if="page == 1"
-              ref="webcam"
-              :device-id="deviceId"
-              @started="onStarted"
-              @stopped="onStopped"
-              @error="onError"
-              @cameras="onCameras"
-              @camera-change="onCameraChange"
-              height="100%"
-            />
-            <!-- <v-overlay  v-if="showingLoading">
+              <!--
+             -->
+              <vue-countdown
+                class="white--text"
+                :style="
+                  tempTotalSeconds >= 10
+                    ? 'margin-left:24px'
+                    : 'margin-left:28px'
+                "
+                :time="totalTime"
+                @end="onCountdownEnd"
+                v-slot="{ totalSeconds }"
+                @progress="handleCountdownProgress"
+              >
+                {{ totalSeconds }}
+              </vue-countdown>
+            </v-img>
+          </v-card-title>
+          <v-card-text>
+            <v-sheet class="animate-flicker" color="transparent">
+              <web-cam
+                v-if="page == 1"
+                ref="webcam"
+                :device-id="deviceId"
+                @started="onStarted"
+                @stopped="onStopped"
+                @error="onError"
+                @cameras="onCameras"
+                @camera-change="onCameraChange"
+                height="100%"
+              />
+              <!-- <v-overlay  v-if="showingLoading">
               <div class="d-flex" style="">
                 <v-img width="100%" height="auto" :src="giftIcon"></v-img>
               </div>
             </v-overlay> -->
-          </v-sheet>
-        </v-card-text>
-        <v-card-actions>
-          <!-- <v-btn @click=""></v-btn> -->
-          <!-- picture {{picture}} -->
-        </v-card-actions>
-      </v-card>
-      <v-card v-if="page == 2" color="transparent" class="px-4" style="">
-        <v-card-text>
-          <v-img
-            v-if="page == 2"
-            :src="resultPicture"
-            :width="'auto'"
-            :height="450"
-            style="position:rerative"
-          >
-          </v-img>
-        </v-card-text>
-        <v-card-actions>
-          <v-img :src="panelImg" width="100%" height="auto">
-            <div class="d-flex align-center justify-center" style="height:100%">
-              <div class="d-flex" style="width:100% ">
-                <div
-                  v-if="resultWinner == 1"
-                  class="d-flex"
-                  style="top: 20%; width: 100%; position: absolute;"
-                >
-                  <span class="ma-auto white--text">
-                    บันทึกหรือแคปเจอร์ เพื่อนำไปรับรางวัล
-                  </span>
-                </div>
-                <v-btn
-                  class="ma-auto"
-                  style="width:90%"
-                  color="primary"
-                  @click="downloadImage"
-                  >บันทึก</v-btn
-                >
-              </div>
-            </div>
-          </v-img>
-        </v-card-actions>
-      </v-card>
-      <v-card
-        v-if="page == 3"
-        color="transparent"
-        class="d-block"
-        height="100%"
-      >
-        <div style="width:100%;height:100%;margin-top:150px" class="d-block">
-          <v-img class="ma-auto my-10" :src="ftiLogo" width="50%" height="auto">
-            <div class="d-flex align-center justify-center" style="height:100%">
-              <div class="d-flex" style="width:100% "></div>
-            </div>
-          </v-img>
-          <div class="d-block my-10" style="width:100%">
-            <v-img class="ma-auto" :src="panelImg" width="80%" height="auto">
+            </v-sheet>
+          </v-card-text>
+          <v-card-actions>
+            <!-- <v-btn @click=""></v-btn> -->
+            <!-- picture {{picture}} -->
+          </v-card-actions>
+        </v-card>
+        <v-card v-if="page == 2" color="transparent" class="px-4" style="">
+          <v-card-text>
+            <v-img
+              v-if="page == 2"
+              :src="resultPicture"
+              :width="'auto'"
+              contain
+              :height="450"
+            >
+            </v-img>
+          </v-card-text>
+          <v-card-actions>
+            <v-img :src="panelImg" width="100%" height="auto">
               <div
                 class="d-flex align-center justify-center"
                 style="height:100%"
               >
                 <div class="d-flex" style="width:100% ">
-                  <span class="ma-auto white--text">
-                    {{ limitType == "same" ? limitTextSame : limitText3 }}
-                  </span>
+                  <div
+                    v-if="resultWinner == 1"
+                    class="d-flex"
+                    style="top: 20%; width: 100%; position: absolute;"
+                  >
+                    <span class="ma-auto white--text">
+                      บันทึกหรือแคปเจอร์ เพื่อนำไปรับรางวัล
+                    </span>
+                  </div>
+                  <v-btn
+                    class="ma-auto"
+                    style="width:90%"
+                    color="primary"
+                    @click="downloadImage"
+                    >บันทึก</v-btn
+                  >
                 </div>
               </div>
             </v-img>
-          </div>
-        </div>
-      </v-card>
-      <div
-        style="z-index:110;position: fixed; bottom: 5px;"
-        v-if="page !== 2 && openButtonTab"
-      >
-        <!-- <v-btn @click="sendPicture">
-        Capture Photo
-      </v-btn> -->
-        <v-btn @click="onStop">
-          Stop Camera
-        </v-btn>
-        <v-btn @click="onStart">
-          Start Camera
-        </v-btn>
-        <!-- <v-btn @click="activeFrame = !activeFrame">frame</v-btn> -->
-        <v-btn @click="resetCookie">
-          reset cookie
-        </v-btn>
-        <v-btn @click="saveBoothCode">
-          saveCode
-        </v-btn>
-        <v-btn @click="isMock = !isMock"
-          >Mock {{ isMock ? "on" : "off" }}</v-btn
-        >
-        <v-btn @click="isLucky = !isLucky"
-          >win {{ isLucky ? "on" : "off" }}</v-btn
-        >
-        <v-btn @click="selectIcon(scanIconSelect)"
-          >icon scan {{ scanIconSelect }}</v-btn
-        >
-        <h2 class="red--text">Time {{ timeToWin }}</h2>
-        <h2 class="red--text d-flex ">
-          Result
-          <div v-if="resultWinner == 1" class="ml-2">win</div>
-          <div v-else-if="resultWinner == 2" class="ml-2">lose</div>
-          <div v-else class="ml-2">0</div>
-        </h2>
-
-        <!-- <div class="figure">
-        <v-img :src="img" class="img-responsive"></v-img>
-      </div> -->
-      </div>
-      <v-btn
-        v-if="!openButtonTab"
-        @click="resetBoothStatus"
-        style="z-index:110;position: fixed; bottom: 5px;left:5px"
-      >
-        reset(debug)
-      </v-btn>
-      <v-btn
-        style="z-index:110;position: fixed; bottom: 5px;right:5px"
-        @click="openButtonTab = !openButtonTab"
-        color="transparent"
-        outlined
-        dense
-      ></v-btn>
-      <v-dialog
-        v-model="warningDialog"
-        max-width="480"
-        transition="fade-transition"
-        persistent
-      >
-        <v-card>
-          <v-card-title>บางอย่างผิดพลาด</v-card-title>
-          <v-card-text>
-            กรุณาสแกน QRcode ใหม่ {{ warningText ? `(${warningText})` : "" }}
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn
-              class="primary"
-              :ripple="false"
-              @click="warningDialog = false"
-            >
-              ตกลง
-            </v-btn>
           </v-card-actions>
         </v-card>
-      </v-dialog>
+        <v-card
+          v-if="page == 3"
+          color="transparent"
+          class="d-block"
+          height="100%"
+        >
+          <div style="width:100%;height:100%;margin-top:150px" class="d-block">
+            <v-img
+              class="ma-auto my-10"
+              :src="ftiLogo"
+              width="50%"
+              height="auto"
+            >
+              <div
+                class="d-flex align-center justify-center"
+                style="height:100%"
+              >
+                <div class="d-flex" style="width:100% "></div>
+              </div>
+            </v-img>
+            <div class="d-block my-10" style="width:100%">
+              <v-img class="ma-auto" :src="panelImg" width="80%" height="auto">
+                <div
+                  class="d-flex align-center justify-center"
+                  style="height:100%"
+                >
+                  <div class="d-flex" style="width:100% ">
+                    <span class="ma-auto white--text">
+                      {{ limitType == "same" ? limitTextSame : limitText3 }}
+                    </span>
+                  </div>
+                </div>
+              </v-img>
+            </div>
+          </div>
+        </v-card>
+        <div
+          style="z-index:110;position: fixed; bottom: 5px;"
+          v-if="page !== 2 && openButtonTab"
+        >
+          <!-- <v-btn @click="sendPicture">
+        Capture Photo
+      </v-btn> -->
+          <v-btn @click="onStop">
+            Stop Camera
+          </v-btn>
+          <v-btn @click="onStart">
+            Start Camera
+          </v-btn>
+          <!-- <v-btn @click="activeFrame = !activeFrame">frame</v-btn> -->
+          <v-btn @click="resetCookie">
+            reset(debug)
+          </v-btn>
+          <v-btn @click="saveBoothCode">
+            saveCode
+          </v-btn>
+          <v-btn @click="isMock = !isMock"
+            >Mock {{ isMock ? "on" : "off" }}</v-btn
+          >
+          <v-btn @click="isLucky = !isLucky"
+            >win {{ isLucky ? "on" : "off" }}</v-btn
+          >
+          <v-btn @click="selectIcon(scanIconSelect)"
+            >icon scan {{ scanIconSelect }}</v-btn
+          >
+          <h2 class="red--text">Time {{ timeToWin }}</h2>
+          <h2 class="red--text d-flex ">
+            Result
+            <div v-if="resultWinner == 1" class="ml-2">win</div>
+            <div v-else-if="resultWinner == 2" class="ml-2">lose</div>
+            <div v-else class="ml-2">0</div>
+          </h2>
+
+          <!-- <div class="figure">
+        <v-img :src="img" class="img-responsive"></v-img>
+      </div> -->
+        </div>
+        <!-- <v-btn
+          v-if="!openButtonTab"
+          @click="resetBoothStatus"
+          style="z-index:110;position: fixed; bottom: 5px;left:5px"
+        >
+          reset(debug)
+        </v-btn> -->
+        <v-btn
+          style="z-index:110;position: fixed; bottom: 5px;right:5px"
+          @click="openButtonTab = !openButtonTab"
+          color="transparent"
+          outlined
+          dense
+        ></v-btn>
+        <v-dialog
+          v-model="warningDialog"
+          max-width="480"
+          transition="fade-transition"
+          persistent
+        >
+          <v-card v-if="sendingAPI">
+            <v-card-title class="d-flex justify-center">
+              <span class="title ma-auto">
+                ระบบกำลังประมวลผล
+              </span>
+            </v-card-title>
+            <v-card-text class="">
+              <div class="d-flex justify-center">
+                <span class="ma-auto">
+                  กรุณารอสักครู่
+                </span>
+              </div>
+              <div class="d-flex justify-center">
+                <v-progress-circular
+                  class="ma-auto"
+                  indeterminate
+                  color="primary"
+                  size="30"
+                ></v-progress-circular>
+              </div>
+            </v-card-text>
+          </v-card>
+          <v-card v-else>
+            <v-card-title>
+              <v-img :src="infoImg" height="25" width="25" contain></v-img>
+            </v-card-title>
+            <v-card-text>
+              <div class="d-flex justify-center">
+                <span class="title ma-auto">
+                  พบข้อผิดพลาด
+                </span>
+              </div>
+              <div class="d-flex justify-center">
+                <span class="ma-auto">
+                  กรุณาสแกน Qr code ใหม่อีกครั้ง
+                </span>
+              </div>
+              <!-- กรุณาสแกน QRcode ใหม่ {{ warningText ? `(${warningText})` : "" }} -->
+            </v-card-text>
+            <v-card-actions>
+              <v-btn
+                class="primary ma-auto"
+                large
+                :ripple="false"
+                @click="warningDialog = false"
+              >
+                ตกลง
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </div>
+      <div class="notSupportDialog">
+        แอพพลิเคชั่นไม่รับรองแนวนอน
+      </div>
     </div>
-    <div v-if="!$vuetify.breakpoint.mobile" class="notSupportDialog">แอพพลิเคชั่นไม่รับรองแนวนอน</div>
+    <div v-if="!$vuetify.breakpoint.xs"></div>
   </div>
 </template>
 
@@ -259,6 +308,7 @@ import scanImg1 from "@/assets/images/item/radar.gif";
 import titleLabelImg from "@/assets/images/item/text_label.png";
 import counterImg from "@/assets/images/item/counter.png";
 import logoMotionImg from "@/assets/images/item/logo_motion.gif";
+import infoImg from "@/assets/images/item/info_ic.png";
 
 export default {
   components: {
@@ -270,6 +320,11 @@ export default {
     // 'el-camera':elCamera
   },
   created() {
+    if (!this.$vuetify.breakpoint.xs) {
+      this.$router.push(
+        "/notfound?text=This application not support this device"
+      );
+    }
     // console.log('policy',this.$cookies.get("fti_policy"))
     if (this.boothShopCode !== null) {
       //   console.log("boothShopCode", this.boothShopCode);
@@ -279,6 +334,7 @@ export default {
         splitTexts ? splitTexts[0] : null
       );
       if (splitTexts.length > 1) {
+        console.log("bp 1");
         this.$store.commit("set_isByPass", true);
       } else {
         this.$store.commit("set_isByPass", false);
@@ -302,6 +358,7 @@ export default {
     return {
       img: null,
       imgMock: imgMock.image,
+      infoImg,
       logoMotionImg,
       scanImg1,
       titleLabelImg,
@@ -326,9 +383,11 @@ export default {
       framePlayImg,
       frameResultImg,
       ftiLogo,
-      random1: 30, // 45
-      random2: 10, // 25
+      setTime: 40000, // 40000
+      random1: 30, // 30
+      random2: 10, // 10
       byPassTime: 30,
+      winnerLimitPerBooth: 3,
       giftIcon,
       imageHeight: "100%",
       imageWidth: "auto",
@@ -340,9 +399,9 @@ export default {
       resultPicture: null,
       resultWinner: 0, // 0 ,win 1,lose 2
       totalTime: 0,
-      setTime: 40000,
       tempTotalSeconds: 0,
-      loadingStage: false,
+      sendingAPI: false,
+      isDone: false,
       openBoxState: false,
       openBoxTime: 3000,
       boothShopCodeDetail: { list: [], createDate: null },
@@ -400,12 +459,25 @@ export default {
       // console.log("devices", this.devices);
       // console.log("first", first);
       // console.log("deviceId", this.deviceId);
+    },
+    sendingAPI(to) {
+      if (to == false && this.resultWinner != 0 && this.isDone == false) {
+        this.showImageGif();
+      }
     }
   },
   async mounted() {
+    // this.removePer();
     this.checkBoothIdList();
   },
   methods: {
+    removePer() {
+      console.log("pe1");
+      let removing = browser.permissions.remove(
+        permissions // Permissions object
+      );
+      console.log("per", removing);
+    },
     selectIcon(num) {
       this.scanIconSelect = num == 1 ? 2 : 1;
     },
@@ -441,10 +513,14 @@ export default {
       }
       if (data.totalSeconds == 1 && this.resultWinner == 2) {
         this.showImageGif();
+        this.isDone = true;
       }
       if (data.totalSeconds == 1 && this.resultWinner == 0) {
         this.openWarningDialog("somthing went wrong");
       }
+      // if(data.totalSeconds == 1 &&this.sendingAPI ){
+
+      // }
     },
     randomStep1() {
       // console.log("itemRateList", this.itemRateList);
@@ -467,7 +543,7 @@ export default {
     },
     async sendPicture(value) {
       this.onCountdownEnd();
-      this.loadingStage = true;
+      this.sendingAPI = true;
       try {
         let boothShopCode = this.$store.state.boothShopCode
           ? this.$store.state.boothShopCode
@@ -506,7 +582,7 @@ export default {
 
         console.error(error);
       } finally {
-        this.loadingStage = false;
+        this.sendingAPI = false;
       }
     },
     resetState() {
@@ -544,7 +620,7 @@ export default {
 
       if (
         this.boothShopCodeDetail.list &&
-        this.boothShopCodeDetail.list.length < 3
+        this.boothShopCodeDetail.list.length < this.winnerLimitPerBooth
       ) {
         let found = this.boothShopCodeDetail.list.find(
           item => item.boothShopCode == this.boothShopCode
@@ -586,6 +662,7 @@ export default {
       this.page = 3;
     },
     showImageGif() {
+      this.warningDialog = false;
       this.showingLoading = true;
       setTimeout(() => {
         this.showingLoading = false;
@@ -605,7 +682,16 @@ export default {
     onStart() {
       this.$refs.webcam.start();
     },
-    onError() {},
+    onError(err) {
+      console.log("err", err);
+      if (err == "DOMException: Permission denied") {
+        // alert("onError camera1", err);
+        this.$router.push(`/notfound?text=${err}`);
+      } else {
+        // alert("onError camera1", err);
+        this.$router.push(`/notfound?text=${err}`);
+      }
+    },
     onCameras(cameras) {
       this.devices = cameras;
       console.log("On Cameras Event", cameras);
@@ -623,9 +709,10 @@ export default {
       this.$cookies.remove("fti_booth_winner");
     },
     downloadImage() {
+      let randomSerial = this.getRandomInt(999, 1);
       var a = document.createElement("a"); //Create <a>
       a.href = this.resultPicture; //Image Base64 Goes here
-      a.download = "Image.png"; //File name Here
+      a.download = `Image_${randomSerial}.png`; //File name Here
       a.click(); //Downloaded file
     },
     openWarningDialog(text = "") {
