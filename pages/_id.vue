@@ -472,11 +472,11 @@ export default {
   },
   methods: {
     removePer() {
-      console.log("pe1");
+      // console.log("pe1");
       let removing = browser.permissions.remove(
         permissions // Permissions object
       );
-      console.log("per", removing);
+      // console.log("per", removing);
     },
     selectIcon(num) {
       this.scanIconSelect = num == 1 ? 2 : 1;
@@ -491,16 +491,16 @@ export default {
     startCountdown: function() {
       this.resetState();
       this.totalTime = this.setTime;
-      console.log("start");
+      // console.log("start");
       this.randomStep1();
       this.counting = true;
     },
     onCountdownEnd: function() {
       // this.counting = false;
       if (this.timeToWin == null) {
-        console.log("game over");
+        // console.log("game over");
       }
-      console.log("end");
+      // console.log("end");
     },
     async handleCountdownProgress(data) {
       this.tempTotalSeconds = data.tempTotalSeconds;
@@ -530,11 +530,11 @@ export default {
       const winner = expanded[Math.floor(Math.random() * expanded.length)];
       if (winner.play) {
         this.timeToWin = this.getRandomInt(this.random1, this.random2);
-        console.log("timeToWin", this.timeToWin);
+        // console.log("timeToWin", this.timeToWin);
       } else {
         this.timeToWin = null;
       }
-      console.log("winner: " + winner.text);
+      // console.log("winner: " + winner.text);
     },
     getRandomInt(min, max) {
       min = Math.ceil(min);
@@ -604,15 +604,15 @@ export default {
         ? this.boothShopCodeDetail.createDate
         : null;
       let yesDay = this.createYesterday();
-      console.log("yesDay", yesDay);
+      // console.log("yesDay", yesDay);
       if (this.boothShopCodeDetail.createDate) {
         // have cookie
         // if (this.checkSameDay(yesDay, current)) {
         if (this.checkSameDay(this.boothShopCodeDetail.createDate, current)) {
           // วันเดียวกัน
-          console.log("วันเดียวกัน");
+          // console.log("วันเดียวกัน");
         } else {
-          console.log("คนละวัน");
+          // console.log("คนละวัน");
           this.$cookies.remove("fti_booth_winner");
           this.boothShopCodeDetail = this.assignCookieWinner();
         }
@@ -633,7 +633,7 @@ export default {
       } else {
         this.sameBoothShop("limit3");
       }
-      console.log("checkBoothIdList", this.boothCookieList);
+      // console.log("checkBoothIdList", this.boothCookieList);
     },
     saveBoothCode(boothShopCode) {
       // let currentDate = this.formatDate(new Date());
@@ -654,10 +654,10 @@ export default {
           maxAge: 60 * 60 * 24 * 1
         }
       );
-      console.log("saveBoothCode", this.boothCookieList);
+      // console.log("saveBoothCode", this.boothCookieList);
     },
     sameBoothShop(text) {
-      console.log("เล่นไปแล้ว", text);
+      // console.log("เล่นไปแล้ว", text);
       this.limitType = text;
       this.page = 3;
     },
@@ -671,10 +671,10 @@ export default {
     },
 
     onStarted(stream) {
-      console.log("On Started Event", stream);
+      // console.log("On Started Event", stream);
     },
     onStopped(stream) {
-      console.log("On Stopped Event", stream);
+      // console.log("On Stopped Event", stream);
     },
     onStop() {
       this.$refs.webcam.stop();
@@ -683,7 +683,7 @@ export default {
       this.$refs.webcam.start();
     },
     onError(err) {
-      console.log("err", err);
+      // console.log("err", err);
       if (err == "DOMException: Permission denied") {
         // alert("onError camera1", err);
         this.$router.push(`/notfound?text=${err}`);
@@ -694,12 +694,12 @@ export default {
     },
     onCameras(cameras) {
       this.devices = cameras;
-      console.log("On Cameras Event", cameras);
+      // console.log("On Cameras Event", cameras);
     },
     onCameraChange(deviceId) {
       this.deviceId = deviceId;
       this.camera = deviceId;
-      console.log("On Camera Change Event", deviceId);
+      // console.log("On Camera Change Event", deviceId);
     },
     resetCookie() {
       this.resetBoothStatus();
@@ -732,18 +732,18 @@ export default {
     // },
     checkSameDay(first, second) {
       let date1 = new Date(first);
-      console.log(
-        "first",
-        date1.getFullYear(),
-        date1.getMonth(),
-        date1.getDate()
-      );
-      console.log(
-        "second",
-        second.getFullYear(),
-        second.getMonth(),
-        second.getDate()
-      );
+      // console.log(
+      //   "first",
+      //   date1.getFullYear(),
+      //   date1.getMonth(),
+      //   date1.getDate()
+      // );
+      // console.log(
+      //   "second",
+      //   second.getFullYear(),
+      //   second.getMonth(),
+      //   second.getDate()
+      // );
       return (
         date1.getFullYear() === second.getFullYear() &&
         date1.getMonth() === second.getMonth() &&
@@ -752,7 +752,7 @@ export default {
     },
     createYesterday() {
       let date = new Date("2020-06-22");
-      console.log("yes", date);
+      // console.log("yes", date);
       return date;
     }
   }
