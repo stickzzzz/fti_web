@@ -2,7 +2,7 @@
   <div>
     <!-- <span class="white--text">
      xs {{this.$vuetify.breakpoint.xs}}</span> -->
-    <div v-if="$vuetify.breakpoint.xs">
+    <div v-if="true">
       <div class="not-support" :style="page == 3 ? 'height:100%' : ''">
         <div
           v-if="page == 1"
@@ -219,13 +219,13 @@
         >
           reset(debug)
         </v-btn> -->
-        <v-btn
+        <!-- <v-btn
           style="z-index:110;position: fixed; bottom: 5px;right:5px"
           @click="openButtonTab = !openButtonTab"
           color="transparent"
           outlined
           dense
-        ></v-btn>
+        ></v-btn> -->
         <v-dialog
           v-model="warningDialog"
           max-width="480"
@@ -288,7 +288,7 @@
         แอพพลิเคชั่นไม่รับรองแนวนอน
       </div>
     </div>
-    <div v-if="!$vuetify.breakpoint.xs"></div>
+    <!-- <div v-if="!$vuetify.breakpoint.xs"></div> -->
   </div>
 </template>
 
@@ -320,11 +320,11 @@ export default {
     // 'el-camera':elCamera
   },
   created() {
-    if (!this.$vuetify.breakpoint.xs) {
-      this.$router.push(
-        "/notfound?text=This application not support this device"
-      );
-    }
+    // if (!this.$vuetify.breakpoint.xs) {
+    //   this.$router.push(
+    //     "/notfound?text=This application not support this device"
+    //   );
+    // }
     // console.log('policy',this.$cookies.get("fti_policy"))
     if (this.boothShopCode !== null) {
       //   console.log("boothShopCode", this.boothShopCode);
